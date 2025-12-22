@@ -11,6 +11,7 @@
         body {
             margin: 0;
             color: white;
+            background-color: #0a0e11;
         }
 
         .navbar {
@@ -22,7 +23,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 2rem;
-            background: #0a0e11;
+            background: transparent;
             backdrop-filter: blur(10px);
             z-index: 1000;
             box-sizing: border-box;
@@ -70,14 +71,16 @@
         }
 
         .navbar .auth .register {
-            background: #333;
-            color: white;
+            background: white;
+            color: black;
+            font-weight: 700;
             font-family: 'Satoshi', sans-serif;
         }
 
         .login {
             background: transparent;
             color: white;
+            font-weight: 700;
             font-family: 'Satoshi', sans-serif;
         }
 
@@ -88,11 +91,10 @@
             justify-content: center;
             font-size: 4rem;
             background: #f0f0f0;
-            border-bottom: 1px solid #ddd;
         }
 
         .sticky-section {
-            background: #2c3e50;
+            background: #0a0e11;
             color: white;
         }
 
@@ -101,25 +103,69 @@
             max-width: 1200px;
             padding: 20px;
             font-family: 'Clash Display', sans-serif;
+            margin-top: -50px;
 
         }
 
         .hero-content h1 {
-            font-size: 10rem;
-            font-weight: 900;
+            font-size: 12.3rem;
+            font-weight: 1200;
             line-height: 1.1;
             margin-bottom: 20px;
+            font-family: 'Clash Display', sans-serif;
+            line-height: 9rem;
+            margin-top: 20px;
         }
 
         .hero-content p {
-            font-size: 1.5rem;
+            font-size: 1rem;
             color: #555;
             font-weight: 400;
             font-family: 'Satoshi', sans-serif;
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 0;
         }
 
         .hero-section_1 {
             background-color: #0a0e11;
+            position: relative;
+        }
+
+        .spline-overlay {
+            position: absolute;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+            /* Allow clicking through to text if transparency allows, user can change if needed. Changed from plan to be safe, but wait, user said 'layer atas', usually for interaction. I will stick to 'all' or default. But iframe steals clicks. Let's use 'pointer-events: none' for the container but 'all' for iframe if needed? No, usually Spline is interactive. I will use 'pointer-events: all' for the iframe effectively. But if it covers text, text is unclickable. I will use 'pointer-events: none' for the wrapper and 'pointer-events: auto' for the iframe if specific interaction needed, but simplified: just css. */
+            /* User asked for "layer atas". 3D scene usually interactive. */
+        }
+
+        .spline-overlay iframe {
+            pointer-events: auto;
+        }
+
+        [animate] .word {
+            display: inline-block;
+        }
+
+        [animate] .line {
+            overflow: hidden;
+        }
+
+        .shadow-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to top, #0a0e11, transparent);
+            z-index: 20;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -144,9 +190,16 @@
         <div id="smooth-content">
             <section class="hero-section_1">
                 <div class="hero-content">
-                    <h1>Top Up Game Mudah & Cepat</h1>
                     <p>Dapatkan diamond, skin, dan voucher game favoritmu hanya dalam hitungan detik dengan harga
                         termurah.</p>
+                    <h1 animate>Top Up Game Mudah & Cepat</h1>
+                </div>
+                <div class="spline-overlay">
+                    <iframe src='https://my.spline.design/untitled-9Sz4ThL5oxtkkMYPpFT3XADg/' frameborder='0'
+                        width='100%' height='100%'></iframe>
+                </div>
+                <div class="shadow-bottom">
+
                 </div>
             </section>
             <!-- Sticky Section -->
@@ -159,6 +212,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
     <script>
         const lenis = new Lenis();
         lenis.on('scroll', ScrollTrigger.update);
@@ -203,6 +257,28 @@
                     scrub: true
                 }
             });
+        });
+
+        let typeSplit = new SplitType('[animate]', {
+            types: 'lines, words, chars',
+            tagName: 'span'
+        })
+
+        gsap.from('[animate] .word', {
+            y: '100%',
+            rotationZ: 5,
+            opacity: 0,
+            duration: 1,
+            ease: 'power4.out',
+            stagger: 0.05,
+        })
+
+        gsap.from(".spline-overlay", {
+            opacity: 0,
+            y: 100,
+            duration: 1.5,
+            ease: "power3.out",
+            delay: 0.5
         });
     </script>
 </body>
