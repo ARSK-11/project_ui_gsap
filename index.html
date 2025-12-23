@@ -280,6 +280,29 @@
             ease: "power3.out",
             delay: 0.5
         });
+
+        // Parallax Effect for Spline Overlay
+        gsap.to(".spline-overlay", {
+            yPercent: 50,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".hero-section_1",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // Opacity Fade for Hero Text & Title
+        gsap.to(".hero-content p, .hero-content h1", {
+            opacity: 0.5,
+            scrollTrigger: {
+                trigger: ".hero-section_1",
+                start: "top top",
+                end: "30% top",
+                scrub: true
+            }
+        });
     </script>
 </body>
 
